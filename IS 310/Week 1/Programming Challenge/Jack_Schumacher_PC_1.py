@@ -7,6 +7,7 @@ ordered_pizzas =[]
 order_count = 0
 user_Choice = ""
 menu_Items = ["Veggie Delight", "BBQ Chicken", "Hawaiian"]
+menu_Items_Casefold = list(map(str.casefold, menu_Items))
 
 print("Python Pizza Paradise")
 
@@ -19,7 +20,7 @@ while (continue_order == True):
     for item in menu_Items:
         print(f"{item}")
     user_Choice = str(input("Please enter the pizza that you would like to order: "))
-    if(user_Choice not in menu_Items):
+    if(user_Choice.casefold() not in menu_Items_Casefold):
         print("Sorry, we only offer Veggie Delight, BBQ Chicken, or Hawaiian. Please choose again.")
     else:
         ordered_pizzas.append(user_Choice)
@@ -31,6 +32,6 @@ while (continue_order == True):
             continue_order = False
 order_count = len(ordered_pizzas)
 print("Thank you", user_Name+".","You have ordered", order_count,"pizzas. Your order will be ready in 20 minutes.")
-print("You order the following pizzas:")
+print("You ordered the following pizzas:")
 for orders in ordered_pizzas:
     print(f"{orders}")
