@@ -13,7 +13,7 @@ def readMovieFile():
     
     # Check if the file exists, if not throw an error message
     if(os.path.exists(movie_File_Path)):
-        movie_File = open(movie_File_Path, 'r') # Use r to tell Python that the backslashes are the literal characters
+        movie_File = open(movie_File_Path, 'r') # Open the file in read only mode
         movie_File_Contents = movie_File.read()
         print(movie_File_Contents)
         movie_File.close()
@@ -34,12 +34,9 @@ def writeMovieFiles():
 # Delete the movies that the user selects by converting to a list and then asking the user to select a number corresponding to a movie to delete. Error checking is implemented to ensure that the user enters valid values
 def deleteMovies():
     if(os.path.exists(movie_File_Path)):
-        with open(movie_File_Path, 'r') as file:
-            delete_Movie_List = file.readlines()
-            print(delete_Movie_List)
+            movie_File= open(movie_File_Path,'r')
+            delete_Movie_List = movie_File.readlines()
             cleaned_Movie_List = [s.strip() for s in delete_Movie_List]
-            print(cleaned_Movie_List)
-            print(len(cleaned_Movie_List))
             cleaned_List_Length = len(cleaned_Movie_List)
             for i in range(cleaned_List_Length):
                 print(f"{i}. {cleaned_Movie_List[i]}")
@@ -53,8 +50,8 @@ def deleteMovies():
                 delete_Movie_File.close()
             else:
                 print("The input is not valid. The value you entered may be out of range.")
-                deleteMovies()
-
+            
+         
     
         
     else:
