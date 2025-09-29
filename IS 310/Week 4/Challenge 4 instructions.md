@@ -106,7 +106,7 @@ In this challenge, you will build an advanced RPG character creation system usin
 *   _Enter eye color:_ **Green**
     
 
-_**\*\*\*\* Randomly rolling stat attributes for your character \*\*\*\***_
+**Randomly rolling stat attributes for your character**
 
 Strength: 14, Dexterity: 7, Constitution: 5, Intelligence: 13, Wisdom: 12, Charisma: 8
 
