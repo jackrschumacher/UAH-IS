@@ -56,7 +56,7 @@ class Humanoid:
         # When leveling up the character add between 1 and 3 points to the list of attributes. Also increment the level
         self.current_level += 1
         for i in self.attributes:
-            self.attributes[i] = self.attributes[i] + random.randint(1)
+            self.attributes[i] = self.attributes[i] + random.randint(1, 3)
 
     def add_bonus(self):
         pass
@@ -69,12 +69,12 @@ class Human(Humanoid):
             bonus_attribute if bonus_attribute else random.choice(character_attributes)
         )
         # Return that this user is a human and all the other attributes
-        super().__init__("Human", height, weight, race, hair_color, eye_color)
+        super().__init__( height, weight, "Human", hair_color, eye_color)
 
 
 class Elves(Humanoid):
     def __init__(self, height, weight, race, hair_color, eye_color):
-        super().__init__("Elves", height, weight, race, hair_color, eye_color)
+        super().__init__( height, weight, "Elves", hair_color, eye_color)
 
     # The Elf character adds 2 to the dexterity and charisma attributes
     def add_bonus(self):
@@ -85,7 +85,7 @@ class Elves(Humanoid):
 class Dwarf(Humanoid):
     def __init__(self, height, weight, race, hair_color, eye_color):
         # Call the Humanoid parent class and passes the updated attributes
-        super().__init__("Dwarf", height, weight, race, hair_color, eye_color)
+        super().__init__( height, weight, "Dwarf", hair_color, eye_color)
 
     # The Dwarf character adds 2 to the strength and charisma attributes and lose 2 from the charisma attribute
     def add_bonus(self):
@@ -241,13 +241,13 @@ def create_character():
         print(
             "Elves automatically have 2 points added to both their charisma and dexterity"
         )
-        character = Elves(height, weight, race, hair, eyes)
+        character = Elves(height, weight, hair, eyes)
     # Do not pass bonus attributes into this class as it is handled in the function
     elif race == "Dwarf":
         print(
             "Dwarves automatically have 2 points added to both their strength and constitution attributes. However, Dwarves lose 2 points from their charisma attribute."
         )
-        character = Dwarf(height, weight, race, hair, eyes)
+        character = Dwarf(height, weight, hair, eyes)
 
     # Prints the character's stats to the user
     def print_stats():
