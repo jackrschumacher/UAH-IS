@@ -16,7 +16,10 @@ valid_Hair = [
     "red",
     "blonde",
 ]
-valid_eye = ["white", "black", "red", "green", "blue", "brown", "purple", "amber"]
+valid_Hair_Length = len(valid_Hair)
+valid_Eye = ["white", "black", "red", "green", "blue", "brown", "purple", "amber"]
+valid_Eye_Length = len(valid_Eye)
+
 character_attributes = [
     "strength",
     "dexterity",
@@ -25,6 +28,7 @@ character_attributes = [
     "wisdom",
     "charisma",
 ]
+character_attributes_length = len(character_attributes)
 
 
 class Humanoid:
@@ -59,7 +63,7 @@ class Humanoid:
 
 
 class Human(Humanoid):
-    # When the user chooses a bonus attributes it will set one randomly
+    # When the user chooses a bonus attributes it will set one randomly if the user does not provide one
     def __init__(self, height, weight, race, hair_color, eye_color, bonus_attribute):
         self.bonus_attribute = (
             bonus_attribute if bonus_attribute else random.choice(character_attributes)
@@ -90,9 +94,187 @@ class Dwarf(Humanoid):
         self.attributes["charisma"] -= 2
 
 
+def create_villain():
+    return "test"
+
+
+# Function for creating a character- allows the user to assign traits to the character selected
+def create_character():
+    # TODO: Make sure that this works with characters when passing
+    print("Welcome to character creation menu.")
+
+    def select_race():
+        while True:
+            print(
+                "Please select one of the following: \n 1. Human \n 2.Elf \n 3. Dwarf"
+            )
+            race_choice = input(
+                "Please enter 1,2 or 3 to select the race of your character: "
+            )
+            try:
+                race_choice = int(race_choice)
+            except ValueError:
+                print("Please enter a valid number")
+            if race_choice == 1 or race_choice == 2 or race_choice == 3:
+                if race_choice == 1:
+                    race = "Human"
+                    print("Thank you for your choice of: ", race)
+                    return race
+                elif race_choice == 2:
+                    race = "Elf"
+                    print("Thank you for your choice of:", race)
+                    return race
+                else:
+                    race = "Dwarf"
+                    print("Thank you for your choice of: ", race)
+                    return race
+            elif (race_choice != 1 or 2 or 3) and race_choice is int:
+                print("Please enter a valid race")
+
+    def select_height_weight():
+        def set_height():
+            while True:
+                height = input(
+                    "Please select a height for your character between 3 and 7 feet: "
+                )
+                try:
+                    height = int(height)
+                    if height >= 3 and height <= 7:
+                        print("Thank you for selecting the height of:", height, "feet")
+                        return height
+                    else:
+                        print("Please enter a number between 3 and 7 feet")
+                except ValueError:
+                    print("Please enter a valid number")
+
+        def set_weight():
+            weight = input("Please enter a weight in between 60 and 300 lbs: ")
+            try:
+                weight = int(weight)
+                if weight >= 60 and weight <= 300:
+                    print("Thank you for selecting a weight of: ", weight, "lbs")
+                    return weight
+                else:
+                    print("Please enter a valid weight")
+            except ValueError:
+                print("Please enter a valid number")
+
+        height = set_height()
+        weight = set_weight()
+        return height, weight
+
+    def select_hair_eyes():
+        def set_hair():
+            while True:
+                print(
+                    "Please enter a hair color for your character from the following list:"
+                )
+
+                for i in range(valid_Hair_Length):
+                    print(f"{valid_Hair[i]}")
+                hair = input("Please enter your hair color:")
+                try:
+                    hair = str(hair)
+                    hair = hair.lower()
+                    if hair in valid_Hair:
+                        print(
+                            "Thank you for selecting the following hair color: ", hair
+                        )
+                        return hair
+                    else:
+                        print("Please enter a valid hair color")
+                except ValueError:
+                    print("Please enter a valid string for hair color")
+
+        def set_eyes():
+            while True:
+                print(
+                    "Please enter an eye color for your character from the following list:"
+                )
+                for i in range(valid_Eye_Length):
+                    print(f"{valid_Eye[i]}")
+                eyes = input("Please enter your eye color: ")
+                try:
+                    eyes = eyes.lower()
+                    if eyes in valid_Eye:
+                        print("Thank you for selecting the following eye color: ", eyes)
+                        return eyes
+                    else:
+                        print("Please enter a valid eye color.")
+                except ValueError:
+                    print("Please enter a valid string for eye color")
+
+        hair = set_hair()
+        eyes = set_eyes()
+        return hair, eyes
+
+    race = select_race()
+    height, weight = select_height_weight()
+    hair, eyes = select_hair_eyes()
+
+    # Check what race the user has selected and then prompt to add additional attributes depending upon user choice
+    if race == "Human":
+        while True:
+            print(
+                "As a human, you can select an attribute to add 2 bonus points to. Here are the attributes that you can choose from:"
+            )
+            for i in range(character_attributes_length):
+                print(f"{character_attributes[i]}")
+                human_bonus = input(
+                    "Please enter a bonus attribute from the list above: "
+                )
+                try:
+                    human_bonus = human_bonus.lower()
+                    if human_bonus in character_attributes:
+                        print(
+                            "Thank you for selecting the following attribute: ",
+                            human_bonus,
+                        )
+                        character = Human(height, weight, hair, eyes, human_bonus)
+                    else:
+                        print("Please enter a valid attribute.")
+                except ValueError:
+                    print("Please enter a valid string")
+
+    # Do not pass bonus attributes into this class as it is handled in the function
+    elif race == "Elf":
+        print(
+            "Elves automatically have 2 points added to both their charisma and dexterity"
+        )
+        character = Elves(height, weight, race, hair, eyes)
+    # Do not pass bonus attributes into this class as it is handled in the function
+    elif race == "Dwarf":
+        print(
+            "Dwarves automatically have 2 points added to both their strength and constitution attributes. However, Dwarves lose 2 points from their charisma attribute."
+        )
+        character = Dwarf(height, weight, race, hair, eyes)
+
+    # Prints the character's stats to the user
+    def print_stats():
+        print("Character attributes: ")
+        print(
+            "Height: {}ft, Weight: {} lbs, Hair Color: {}, Eye Color: {}, Strength: {}, Dexterity: {}, Constitution: {}, Intelligence: {}, Wisdom: {}, Charisma: {} \n".format(
+                character.height,
+                character.hair_color,
+                character.eye_color,
+                character.attributes["strength"],
+                character.attributes["dexterity"],
+                character.attributes["constitution"],
+                character.attributes["intelligence"],
+                character.attributes["wisdom"],
+                character.attributes["wisdom"],
+                character.attributes["charisma"],
+            )
+        )
+
+    print_stats()
+    return character
+
+
 # Main function for calling the other sub functions
 def main():
     print("RPG Game")
+    character = create_character()
 
 
 main()
