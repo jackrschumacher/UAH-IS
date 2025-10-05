@@ -5,6 +5,7 @@
 # Import random in order to randomize the additional stats (strength,charisma,etc)
 import random
 
+# Set up valid hair colors
 valid_Hair = [
     "white",
     "silver",
@@ -16,10 +17,13 @@ valid_Hair = [
     "red",
     "blonde",
 ]
+# Set the length of that list
 valid_Hair_Length = len(valid_Hair)
+# Set valid eye colors to print out for the user when selecting
 valid_Eye = ["white", "black", "red", "green", "blue", "brown", "purple", "amber"]
+# Set the length of valid eye color list
 valid_Eye_Length = len(valid_Eye)
-
+# Define the global character attributes in order to use in the various functions in the program
 character_attributes = [
     "strength",
     "dexterity",
@@ -28,6 +32,7 @@ character_attributes = [
     "wisdom",
     "charisma",
 ]
+# Set the length of the attributes of character attributes list
 character_attributes_length = len(character_attributes)
 
 
@@ -61,20 +66,44 @@ class Humanoid:
     def add_bonus(self):
         pass
 
+    # Designed to randomize attack variables to simulate actual combat and luck-using random variables to change the attributes
+    def combat(self, villain):
+        # Modify attribute- between 5 and 10 points divided by 2 and 3
+        def modify_attributes(self, attribute):
+            return (
+                self.attributes[attribute] - random.randint(5, 10)
+            ) // random.randint(2, 3)
+
+        # Randomly add to the strength attribute between 1 and 6 points
+        attack_strength = self.attributes("strength") + random.randint(1, 6)
+        combat_defense = random.randint(1, 10) + max(
+            0, villain.modify_attributes("constitution")
+        )
+        # Determine the damage inflicted to your character depending on the attack strength
+        damage_inflicted = max(0, attack_strength - combat_defense)
+        # If above zero, the users character wins. If not they lose
+        if damage_inflicted > 0:
+            status = True
+            self.increase_level()
+            return status, attack_strength, combat_defense, damage_inflicted
+
 
 class Human(Humanoid):
     # When the user chooses a bonus attributes it will set one randomly if the user does not provide one
-    def __init__(self, height, weight, race, hair_color, eye_color, bonus_attribute):
+    def __init__(self, height, weight, hair_color, eye_color, bonus_attribute):
         self.bonus_attribute = (
             bonus_attribute if bonus_attribute else random.choice(character_attributes)
         )
         # Return that this user is a human and all the other attributes
-        super().__init__( height, weight, "Human", hair_color, eye_color)
+        super().__init__(height, weight, "Human", hair_color, eye_color)
+        # Add 2 points to whatever the user wants to
+        if self.bonus_attribute in self.attributes:
+            self.attributes[self.bonus_attribute] += 2
 
 
 class Elves(Humanoid):
     def __init__(self, height, weight, race, hair_color, eye_color):
-        super().__init__( height, weight, "Elves", hair_color, eye_color)
+        super().__init__(height, weight, "Elves", hair_color, eye_color)
 
     # The Elf character adds 2 to the dexterity and charisma attributes
     def add_bonus(self):
@@ -85,7 +114,7 @@ class Elves(Humanoid):
 class Dwarf(Humanoid):
     def __init__(self, height, weight, race, hair_color, eye_color):
         # Call the Humanoid parent class and passes the updated attributes
-        super().__init__( height, weight, "Dwarf", hair_color, eye_color)
+        super().__init__(height, weight, "Dwarf", hair_color, eye_color)
 
     # The Dwarf character adds 2 to the strength and charisma attributes and lose 2 from the charisma attribute
     def add_bonus(self):
@@ -100,9 +129,9 @@ def create_villain():
 
 # Function for creating a character- allows the user to assign traits to the character selected
 def create_character():
-    # TODO: Make sure that this works with characters when passing
     print("Welcome to character creation menu.")
 
+    # Select character race
     def select_race():
         while True:
             print(
@@ -131,6 +160,7 @@ def create_character():
             elif (race_choice != 1 or 2 or 3) and race_choice is int:
                 print("Please enter a valid race")
 
+    # Set character weight
     def select_height_weight():
         def set_height():
             while True:
@@ -163,6 +193,7 @@ def create_character():
         weight = set_weight()
         return height, weight
 
+    # Set hair color
     def select_hair_eyes():
         def set_hair():
             while True:
@@ -231,6 +262,7 @@ def create_character():
                             human_bonus,
                         )
                         character = Human(height, weight, hair, eyes, human_bonus)
+                        break
                     else:
                         print("Please enter a valid attribute.")
                 except ValueError:
@@ -242,12 +274,14 @@ def create_character():
             "Elves automatically have 2 points added to both their charisma and dexterity"
         )
         character = Elves(height, weight, hair, eyes)
+        character.add_bonus()
     # Do not pass bonus attributes into this class as it is handled in the function
     elif race == "Dwarf":
         print(
             "Dwarves automatically have 2 points added to both their strength and constitution attributes. However, Dwarves lose 2 points from their charisma attribute."
         )
         character = Dwarf(height, weight, hair, eyes)
+        character.add_bonus()
 
     # Prints the character's stats to the user
     def print_stats():
@@ -255,13 +289,13 @@ def create_character():
         print(
             "Height: {}ft, Weight: {} lbs, Hair Color: {}, Eye Color: {}, Strength: {}, Dexterity: {}, Constitution: {}, Intelligence: {}, Wisdom: {}, Charisma: {} \n".format(
                 character.height,
+                character.weight,
                 character.hair_color,
                 character.eye_color,
                 character.attributes["strength"],
                 character.attributes["dexterity"],
                 character.attributes["constitution"],
                 character.attributes["intelligence"],
-                character.attributes["wisdom"],
                 character.attributes["wisdom"],
                 character.attributes["charisma"],
             )
@@ -271,10 +305,98 @@ def create_character():
     return character
 
 
+# Create a villain for the main character to fight in the battle function. This function will not be displayed to the user (although this could be added easily)
+def create_villain(race):
+    # This class will generate the opponent attributes. Since we dont need to have the user assign the values to the opponent character, we will just randomly generate the values
+    # Generate opponent height color- between 3 and 7 feet
+    opponent_height = random.randint(3, 7)
+    # Randomly generate opponent weight-between 60 and 300 lbs
+    opponent_weight = random.randint(60, 300)
+    opponent_hair = random.choice(list(valid_Hair).lower())
+    opponent_eye = random.choice(list(valid_Eye).lower())
+    # Randomly select a random opponent attribute to modify
+    opponent_random_attribute = random.choice(character_attributes)
+    if race == "Human":
+        return Human(
+            opponent_height,
+            opponent_weight,
+            opponent_hair,
+            opponent_eye,
+            opponent_random_attribute,
+        )
+    # Attributes are handled in the elf class itself, so no need to add bonus here
+    elif race == "Elf":
+        return Elves(opponent_height, opponent_weight, opponent_hair, opponent_eye)
+    # Attributes are handled in the dwarf class itself, so no need to add bonus here
+    elif race == "Dwarf":
+        return Dwarf(opponent_height, opponent_weight, opponent_eye, opponent_hair)
+
+
 # Main function for calling the other sub functions
 def main():
     print("RPG Game")
     character = create_character()
+    combat_Choice = str(
+        input(
+            "Would you like to enter combat with an opponent? Please enter yes and no: "
+        )
+    )
+    if combat_Choice.lower == "yes":
+        print(
+            "Please select the race that you would like to combat from the following list"
+        )
+        print("1. Human \n 2. Elf \n 3. Dwarf")
+        villain_race = str(
+            input(
+                "Please enter the number that corresponds with the race of the opponent that you would like to fight"
+            )
+        )
+        while True:
+            try:
+                # The user chooses the human race
+                if villain_race == "1":
+                    villain = create_villain("Human")
+                    break
+                elif villain_race == "2":
+                    villain = create_villain("Elf")
+                    break
+                elif villain_race == "3":
+                    villain = create_villain("Dwarf")
+                    break
+                # Catch if the user enters a value out of range
+                else:
+                    print("Please enter a value between 1 and 3")
+            # Catch if the value is not string
+            except Exception as error:
+                print("An error occurred while executing: ", error)
+
+        # Print message to the user about the villain the hero
+        print("Started combat between {character.race} and {opponent.race}")
+
+        status, attack_strength, defense_strength, damage = character.combat(villain)
+
+        if status == "won":
+            print("Your character won the combat!")
+            print("Your character's new attributes after combat are: ")
+            # Print out the users attributes
+            print(
+                "Height: {}ft, Weight: {} lbs, Hair Color: {}, Eye Color: {}, Strength: {}, Dexterity: {}, Constitution: {}, Intelligence: {}, Wisdom: {}, Charisma: {} \n".format(
+                    character.height,
+                    character.weight,
+                    character.hair_color,
+                    character.eye_color,
+                    character.attributes["strength"],
+                    character.attributes["dexterity"],
+                    character.attributes["constitution"],
+                    character.attributes["intelligence"],
+                    character.attributes["wisdom"],
+                    character.attributes["charisma"],
+                )
+            )
+        else:
+            print("You lost the combat. Try again with a different character next time")
 
 
-main()
+# Validate main function exists
+if __name__ == "__main__":
+    main()
