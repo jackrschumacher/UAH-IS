@@ -66,16 +66,17 @@ class Humanoid:
     def add_bonus(self):
         pass
 
+    def modify_attributes(self, attribute):
+        return (self.attributes[attribute] - random.randint(5, 10)) // random.randint(
+            2, 3
+        )
+
     # Designed to randomize attack variables to simulate actual combat and luck-using random variables to change the attributes
     def combat(self, villain):
         # Modify attribute- between 5 and 10 points divided by 2 and 3
-        def modify_attributes(self, attribute):
-            return (
-                self.attributes[attribute] - random.randint(5, 10)
-            ) // random.randint(2, 3)
 
         # Randomly add to the strength attribute between 1 and 6 points
-        attack_strength = self.attributes("strength") + random.randint(1, 6)
+        attack_strength = self.attributes["strength"] + random.randint(1, 6)
         combat_defense = random.randint(1, 10) + max(
             0, villain.modify_attributes("constitution")
         )
@@ -85,6 +86,8 @@ class Humanoid:
         if damage_inflicted > 0:
             status = True
             self.increase_level()
+            return status, attack_strength, combat_defense, damage_inflicted
+        else:
             return status, attack_strength, combat_defense, damage_inflicted
 
 
@@ -121,10 +124,6 @@ class Dwarf(Humanoid):
         self.attributes["strength"] += 2
         self.attributes["constitution"] += 2
         self.attributes["charisma"] -= 2
-
-
-def create_villain():
-    return "test"
 
 
 # Function for creating a character- allows the user to assign traits to the character selected
@@ -167,27 +166,25 @@ def create_character():
                 height = input(
                     "Please select a height for your character between 3 and 7 feet: "
                 )
-                try:
-                    height = int(height)
-                    if height >= 3 and height <= 7:
-                        print("Thank you for selecting the height of:", height, "feet")
-                        return height
-                    else:
-                        print("Please enter a number between 3 and 7 feet")
-                except ValueError:
-                    print("Please enter a valid number")
+                height = int(height)
+                if height >= 3 and height <= 7:
+                    print("Thank you for selecting the height of:", height, "feet")
+                    return height
+                else:
+                    print("Please enter a number between 3 and 7 feet")
 
         def set_weight():
-            weight = input("Please enter a weight in between 60 and 300 lbs: ")
-            try:
-                weight = int(weight)
-                if weight >= 60 and weight <= 300:
-                    print("Thank you for selecting a weight of: ", weight, "lbs")
-                    return weight
-                else:
-                    print("Please enter a valid weight")
-            except ValueError:
-                print("Please enter a valid number")
+            while True:
+                weight = input("Please enter a weight in between 60 and 300 lbs: ")
+                try:
+                    weight = int(weight)
+                    if weight >= 60 and weight <= 300:
+                        print("Thank you for selecting a weight of: ", weight, "lbs")
+                        return weight
+                    else:
+                        print("Please enter a valid weight")
+                except ValueError:
+                    print("Please enter a valid number")
 
         height = set_height()
         weight = set_weight()
@@ -251,36 +248,33 @@ def create_character():
             )
             for i in range(character_attributes_length):
                 print(f"{character_attributes[i]}")
-                human_bonus = input(
-                    "Please enter a bonus attribute from the list above: "
+            #    Input the the attribute
+            human_bonus = input("Please enter a bonus attribute from the list above: ")
+
+            human_bonus = human_bonus.lower()
+            if human_bonus in character_attributes:
+                print(
+                    "Thank you for selecting the following attribute: ",
+                    human_bonus,
                 )
-                try:
-                    human_bonus = human_bonus.lower()
-                    if human_bonus in character_attributes:
-                        print(
-                            "Thank you for selecting the following attribute: ",
-                            human_bonus,
-                        )
-                        character = Human(height, weight, hair, eyes, human_bonus)
-                        break
-                    else:
-                        print("Please enter a valid attribute.")
-                except ValueError:
-                    print("Please enter a valid string")
+                character = Human(height, weight, hair, eyes, human_bonus)
+                break
+            else:
+                print("Please enter a valid attribute.")
 
     # Do not pass bonus attributes into this class as it is handled in the function
     elif race == "Elf":
         print(
             "Elves automatically have 2 points added to both their charisma and dexterity"
         )
-        character = Elves(height, weight, hair, eyes)
+        character = Elves(height, weight, "Elf", hair, eyes)
         character.add_bonus()
     # Do not pass bonus attributes into this class as it is handled in the function
     elif race == "Dwarf":
         print(
             "Dwarves automatically have 2 points added to both their strength and constitution attributes. However, Dwarves lose 2 points from their charisma attribute."
         )
-        character = Dwarf(height, weight, hair, eyes)
+        character = Dwarf(height, weight, "Dwarf", hair, eyes)
         character.add_bonus()
 
     # Prints the character's stats to the user
@@ -312,8 +306,8 @@ def create_villain(race):
     opponent_height = random.randint(3, 7)
     # Randomly generate opponent weight-between 60 and 300 lbs
     opponent_weight = random.randint(60, 300)
-    opponent_hair = random.choice(list(valid_Hair).lower())
-    opponent_eye = random.choice(list(valid_Eye).lower())
+    opponent_hair = random.choice(valid_Hair)
+    opponent_eye = random.choice(valid_Eye)
     # Randomly select a random opponent attribute to modify
     opponent_random_attribute = random.choice(character_attributes)
     if race == "Human":
@@ -326,10 +320,14 @@ def create_villain(race):
         )
     # Attributes are handled in the elf class itself, so no need to add bonus here
     elif race == "Elf":
-        return Elves(opponent_height, opponent_weight, opponent_hair, opponent_eye)
+        return Elves(
+            opponent_height, opponent_weight, "Elves", opponent_hair, opponent_eye
+        )
     # Attributes are handled in the dwarf class itself, so no need to add bonus here
     elif race == "Dwarf":
-        return Dwarf(opponent_height, opponent_weight, opponent_eye, opponent_hair)
+        return Dwarf(
+            opponent_height, opponent_weight, "Dwarf", opponent_hair, opponent_eye
+        )
 
 
 # Main function for calling the other sub functions
@@ -338,20 +336,20 @@ def main():
     character = create_character()
     combat_Choice = str(
         input(
-            "Would you like to enter combat with an opponent? Please enter yes and no: "
+            "Would you like to enter combat with an opponent? Please enter yes or no: "
         )
     )
-    if combat_Choice.lower == "yes":
-        print(
-            "Please select the race that you would like to combat from the following list"
-        )
-        print("1. Human \n 2. Elf \n 3. Dwarf")
-        villain_race = str(
-            input(
-                "Please enter the number that corresponds with the race of the opponent that you would like to fight"
-            )
-        )
+    if combat_Choice.lower() == "yes":
         while True:
+            print(
+                "Please select the race that you would like to combat from the following list"
+            )
+            print(" 1. Human \n 2. Elf \n 3. Dwarf")
+            villain_race = str(
+                input(
+                    "Please enter the number that corresponds with the race of the opponent that you would like to fight: "
+                )
+            )
             try:
                 # The user chooses the human race
                 if villain_race == "1":
@@ -371,12 +369,16 @@ def main():
                 print("An error occurred while executing: ", error)
 
         # Print message to the user about the villain the hero
-        print("Started combat between {character.race} and {opponent.race}")
+        print(f"Started combat between {character.race} and {villain.race}")
 
         status, attack_strength, defense_strength, damage = character.combat(villain)
 
-        if status == "won":
+        if status is True:
             print("Your character won the combat!")
+            print("Battle Statistics")
+            print(
+                f"Attack Strength: {attack_strength} \n Defense Strength: {defense_strength} \n Damage: {damage}"
+            )
             print("Your character's new attributes after combat are: ")
             # Print out the users attributes
             print(
@@ -394,6 +396,10 @@ def main():
                 )
             )
         else:
+            print("Battle Statistics")
+            print(
+                "fAttack Strength: {attack_strength} \n Defense Strength: {defense_strength} \n Damage: {damage}"
+            )
             print("You lost the combat. Try again with a different character next time")
 
 
