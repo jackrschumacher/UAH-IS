@@ -159,7 +159,7 @@ def create_character():
             elif (race_choice != 1 or 2 or 3) and race_choice is int:
                 print("Please enter a valid race")
 
-    # Set character weight
+    # Set character weight- validate input
     def select_height_weight():
         def set_height():
             while True:
@@ -190,7 +190,7 @@ def create_character():
         weight = set_weight()
         return height, weight
 
-    # Set hair color
+    # Set hair color- prints out the list of options for the user to select and validates the users input
     def select_hair_eyes():
         def set_hair():
             while True:
