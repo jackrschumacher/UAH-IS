@@ -5,16 +5,20 @@
 # Install the following packages using pip (I did this in a virtual environment to avoid modifying the overall system state)
 import pandas as pd
 import numpy as np
-import matplotlib, os
+import matplotlib
+import os
+from datetime import datetime
 
+# Initialize the current date in order to use in functions
+current_date = datetime.now()
 
 def read_Files():
-    # Define file path  - read the raw string to avoid newline interpretation
+    # Define file path  - read the raw string to avoid newline interpretation. Using the relative file path here to avoid issues
     file1_location = (
-        r"C:\Users\jackr\Documents\UAH\UAH-IS\IS 310\Week 5\Data\Auto_1_with price.csv"
+        r"Week 5/Data/Auto_1_with price.csv"
     )
     file2_location = (
-        r"C:\Users\jackr\Documents\UAH\UAH-IS\IS 310\Week 5\Data\Auto_2_with price.csv"
+        r"Week 5/Data/Auto_2_with price.csv"
     )
     # Check if the file paths exist, then read to pandas and return. If not print error message
     if os.path.exists(file1_location) and os.path.exists(file2_location):
@@ -234,11 +238,16 @@ def create_Columns(merged_df):
 
     merged_df["hp"].fillna(mean_hp,inplace=True)
     merged_df["horsepower_category"] = pd.cut(merged_df["hp"],3)
-    print(f"Horsepower categories: \n{merged_df["horsepower_category"].value_counts()}")
+    print(f"Horsepower categories: \n{merged_df['horsepower_category'].value_counts()}")
+
+    # Get the current year and then subtract the year that the car was built in
+    current_year = current_date.year
+    merged_df["car_age"] = current_year - merged_df["year"]
     
 
 
 def main():
+    
     file1_df, file2_df = read_Files()
 
     display_df(file1_df, file2_df)
