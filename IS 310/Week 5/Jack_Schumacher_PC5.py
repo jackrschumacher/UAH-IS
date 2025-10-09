@@ -12,14 +12,11 @@ from datetime import datetime
 # Initialize the current date in order to use in functions
 current_date = datetime.now()
 
+
 def read_Files():
     # Define file path  - read the raw string to avoid newline interpretation. Using the relative file path here to avoid issues
-    file1_location = (
-        r"Week 5/Data/Auto_1_with price.csv"
-    )
-    file2_location = (
-        r"Week 5/Data/Auto_2_with price.csv"
-    )
+    file1_location = r"Week 5/Data/Auto_1_with price.csv"
+    file2_location = r"Week 5/Data/Auto_2_with price.csv"
     # Check if the file paths exist, then read to pandas and return. If not print error message
     if os.path.exists(file1_location) and os.path.exists(file2_location):
         file1_df = pd.read_csv(file1_location)
@@ -222,8 +219,6 @@ def merge_dataframes(file1_df, file2_df):
     merged_df = remove_Merge_Duplicates(merged_df)
     return merged_df
 
-    
-
 
 # Create the price to weight column by
 def create_Columns(merged_df):
@@ -232,22 +227,39 @@ def create_Columns(merged_df):
     display_Merged_Df(merged_df)
 
     # Create horsepower bins- automatically cut based off of input data. Need to convert hp from string to numeric
-    merged_df["hp"] = pd.to_numeric(merged_df["hp"], errors='coerce')
+    merged_df["hp"] = pd.to_numeric(merged_df["hp"], errors="coerce")
     mean_hp = merged_df["hp"].mean()
     # Fill empty spots with mean
 
-    merged_df["hp"].fillna(mean_hp,inplace=True)
-    merged_df["horsepower_category"] = pd.cut(merged_df["hp"],3)
+    merged_df["hp"] = merged_df["hp"].fillna(mean_hp)
+    merged_df["horsepower_category"] = pd.cut(merged_df["hp"], 3)
     print(f"Horsepower categories: \n{merged_df['horsepower_category'].value_counts()}")
 
     # Get the current year and then subtract the year that the car was built in
     current_year = current_date.year
     merged_df["car_age"] = current_year - merged_df["year"]
-    
+    merged_df["car_age"] = pd.to_numeric(merged_df["year"], errors="coerce").astype(int)
+
+    return merged_df
+
+
+def group_Cols_Calc_Stats(merged_df):
+    # Group by engine type and calculate the mean horsepower
+    avg_hp = merged_df.groupby("engine")["hp"].mean()
+    print(f"\n Average price engine type vs hp: \n {avg_hp}")
+    # Calculate the total hp in each of the groups
+    total_hp = merged_df.groupby("engine")["hp"].sum()
+    print(f"\n Total horsepower per engine type: \n {total_hp}")
+    # Calculate the number of items in each of the hp groups
+    counts_Per_Group = merged_df.groupby("engine").size()
+    print(f"\n Items per engine type: {counts_Per_Group}")
+    # Use the avg_hp series to sort the data in descending order. Then use head(5) to display the top 5 values
+    sorted_By_Hp = avg_hp.sort_values(ascending = False)
+    print(f"\n Data sorted by horsepower and engine type (top 5): \n {sorted_By_Hp.head(5)}")
+    return merged_df
 
 
 def main():
-    
     file1_df, file2_df = read_Files()
 
     display_df(file1_df, file2_df)
@@ -256,7 +268,8 @@ def main():
     calculate_Statistics(file1_df, file2_df)
     merged_df = merge_dataframes(file1_df, file2_df)
 
-    create_Columns(merged_df)
+    merged_df = create_Columns(merged_df)
+    merged_df = group_Cols_Calc_Stats(merged_df)
 
 
 # Validate main function     exists
