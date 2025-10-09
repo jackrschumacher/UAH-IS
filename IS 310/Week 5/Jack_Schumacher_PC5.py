@@ -6,8 +6,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib
+import matplotlib.pyplot as pyplt
 import os
+import seaborn as sea
 from datetime import datetime
+
 
 # Initialize the current date in order to use in functions
 current_date = datetime.now()
@@ -118,6 +121,7 @@ def calculate_Statistics(file1_df, file2_df):
         print(f"Number of Rows- File 1: {num_Rows1}")
         print(f"Number of Rows- File 2: {num_Rows2}")
 
+        # Calculate column statistics and print to console
         print("Column Statistics for File 1: \n")
         for column in column_index1:
             if pd.api.types.is_numeric_dtype(file1_df[column]):
@@ -228,11 +232,12 @@ def create_Columns(merged_df):
 
     # Create horsepower bins- automatically cut based off of input data. Need to convert hp from string to numeric
     merged_df["hp"] = pd.to_numeric(merged_df["hp"], errors="coerce")
-    mean_hp = merged_df["hp"].mean()
     # Fill empty spots with mean
+    mean_hp = merged_df["hp"].mean()
 
+    hp_levels = ["Low", "Medium", "High"]
     merged_df["hp"] = merged_df["hp"].fillna(mean_hp)
-    merged_df["horsepower_category"] = pd.cut(merged_df["hp"], 3)
+    merged_df["horsepower_category"] = pd.cut(merged_df["hp"], 3, labels=hp_levels)
     print(f"Horsepower categories: \n{merged_df['horsepower_category'].value_counts()}")
 
     # Get the current year and then subtract the year that the car was built in
@@ -254,9 +259,83 @@ def group_Cols_Calc_Stats(merged_df):
     counts_Per_Group = merged_df.groupby("engine").size()
     print(f"\n Items per engine type: {counts_Per_Group}")
     # Use the avg_hp series to sort the data in descending order. Then use head(5) to display the top 5 values
-    sorted_By_Hp = avg_hp.sort_values(ascending = False)
-    print(f"\n Data sorted by horsepower and engine type (top 5): \n {sorted_By_Hp.head(5)}")
+    sorted_By_Hp = avg_hp.sort_values(ascending=False)
+    print(
+        f"\n Data sorted by horsepower and engine type (top 5): \n {sorted_By_Hp.head(5)}"
+    )
     return merged_df
+
+
+# Create a chart of the number of horsepower that the vehicle develops vs the mpg of the vehicle
+def create_Charts(merged_df):
+    # Group the dataframe by horsepower and miles per gallon
+    def aggregated_Stats():
+        hp_vs_mpg = (
+            merged_df.groupby("hp")["miles_per_gallon"]
+            .mean()
+            .sort_values(ascending=False)
+        )
+        pyplt.figure(figsize=(8, 6), num="Horsepower developed vs MPG")
+        pyplt.bar(hp_vs_mpg.index, hp_vs_mpg.values)
+        pyplt.title("Horsepower developed vs MPG", fontsize=14)
+        pyplt.xlabel("Horsepower developed", fontsize=12)
+        pyplt.ylabel("MPG", fontsize=12)
+        pyplt.tight_layout()  # Prevent axis labels from getting cut off
+        print(
+            "The program will now display a graph. To display another graph, simply close the graph window"
+        )
+
+        pyplt.show()
+
+    # Scatter plot of Torque vs Pounds
+    def scatter_Plot():
+        pyplt.figure(figsize=(8, 6), num="Torque vs Pounds")
+        pyplt.scatter(merged_df["torque"], merged_df["pounds"])
+        pyplt.title("Torque vs Pounds", fontsize=14)
+        pyplt.xlabel("Torque", fontsize=12)
+        pyplt.ylabel("Pounds", fontsize=12)
+        pyplt.tight_layout()
+        print(
+            "The program will now display a graph. To display another graph, simply close the graph window"
+        )
+        pyplt.savefig("TorquevsPounds")
+        pyplt.show()
+
+    # Create a line chart of average price over year
+    def line_Chart():
+        avg_price = (
+            merged_df.groupby("year")["price"].mean().sort_values(ascending=False)
+        )
+        pyplt.figure(figsize=(8, 6), num="Price vs Year")
+        pyplt.plot(avg_price.index, avg_price.values)
+        pyplt.title("Year produced vs Price", fontsize=14)
+        pyplt.xlabel("Year", fontsize=12)
+        pyplt.ylabel("Price", fontsize=12)
+        pyplt.tight_layout()
+        print(
+            "The program will now display a graph. To display another graph, simply close the graph window"
+        )
+        pyplt.show()
+
+    aggregated_Stats()
+    scatter_Plot()
+    line_Chart()
+
+
+def Calculate_Correlation(merged_df):
+    # Create a corelation matrix using only columns that have numeric values and then display the correlation matrix
+    corr_matrix = merged_df.corr(numeric_only=True)
+    # Display correlation matrix to the user
+    print(corr_matrix)
+    # Use seaborn to create correlation heatmap
+    pyplt.figure(figsize=(12, 8))
+    sea.heatmap(corr_matrix)
+    pyplt.title("Correlation heatmap")
+    pyplt.show()
+
+
+def export_df(merged_df):
+    merged_df.to_csv("cleaned_automobiles.csv")
 
 
 def main():
@@ -264,12 +343,14 @@ def main():
 
     display_df(file1_df, file2_df)
     file1_df, file2_df = clean_Data(file1_df, file2_df)
-    # display_df(file1_df, file2_df)  # TODO: Remove later after validation
     calculate_Statistics(file1_df, file2_df)
     merged_df = merge_dataframes(file1_df, file2_df)
 
     merged_df = create_Columns(merged_df)
     merged_df = group_Cols_Calc_Stats(merged_df)
+    create_Charts(merged_df)
+    Calculate_Correlation(merged_df)
+    export_df(merged_df)
 
 
 # Validate main function     exists
