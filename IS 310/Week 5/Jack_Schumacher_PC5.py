@@ -329,7 +329,7 @@ def Calculate_Correlation(merged_df):
     print(corr_matrix)
     # Use seaborn to create correlation heatmap
     pyplt.figure(figsize=(12, 8))
-    sea.heatmap(corr_matrix)
+    sea.heatmap(corr_matrix, annot=True)
     pyplt.title("Correlation heatmap")
     pyplt.show()
 
