@@ -1,3 +1,4 @@
+#!/bin/bash
 # Calculate the sum of 2 numbers 
 
 echo "Sum Number program"
