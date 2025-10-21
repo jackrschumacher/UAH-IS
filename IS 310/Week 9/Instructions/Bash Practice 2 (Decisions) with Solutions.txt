@@ -1,0 +1,69 @@
+1. Write a Bash script that checks if a number is greater than 10 and prints a message accordingly.
+
+# Prompt the user to enter a number
+echo "Input a number:"
+read n
+
+# Check if the number is greater than 100
+if [ "$n" -gt 100 ]; then
+    echo "The number is greater than 100."
+else
+    echo "The number is not greater than 100."
+fi
+
+=========================================================================
+
+2. Write a Bash script that prompts the user to enter their age, and then checks if the age is greater than or equal to 18. If it is, print "You are an adult", otherwise print "You are a minor".
+
+# Prompt the user to enter their age
+echo "Input your age:"
+read age
+
+# Check if the age is greater than or equal to 18
+if [ "$age" -ge 18 ]; then
+    echo "You are an adult"
+else
+    echo "You are a minor"
+fi
+
+=========================================================================
+
+3. Write a Bash script that prompts the user to input a password, and then checks if the password matches a predefined value. If it does, print "Access granted", otherwise print "Access denied".
+
+# Predefined password
+my_password="Pass0123$"
+
+# Prompting the user to input a password
+printf "Please input your password: "
+
+read user_password
+
+printf "\n"
+
+# Checking if the entered password matches the predefined value
+if [ "$user_password" = "$my_password" ]; then
+    echo "Access granted"
+else
+    echo "Access denied"
+fi
+
+=========================================================================
+
+4. Write a Bash script that checks if a file named "abc.sh" is executable and if it is, runs the script, otherwise prints "Script is not executable".
+
+# Check if the file "abc.sh" exists
+if [ -e "abc.sh" ]; then
+    # Check if the file is executable
+    if [ -x "abc.sh" ]; then
+        # If executable, run the script
+        ./abc.sh
+    else
+        # If not executable, print message
+        echo "Script is not executable"
+    fi
+else
+    # If the file does not exist, print message
+    echo "File 'abc.sh' does not exist"
+fi
+
+=========================================================================
