@@ -1,6 +1,3 @@
-[submodule "IS 310/Bash Guide"]
-	path = IS 310/Bash Guide
-	url = https://github.com/Idnan/bash-guide.git
 [submodule "IS 310/Python-Final"]
 	path = IS 310/Python-Final
 	url = git@github.com:jackrschumacher/UAH-IS-310-Python-Final.git
