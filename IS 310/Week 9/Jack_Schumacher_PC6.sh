@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## IS 310 Programming Challenge 4
+## IS 310 Programming Challenge 6
 ## Author: Jack Schumacher
 ## Contact: js0342@uah.edu
 
