@@ -1,0 +1,41 @@
+An attempt was made to set the Directory Services Restore Mode local_user password.
+
+Subject:
+	Security ID:		S-1-5-21-1913345275-1711810662-261465553-500
+	Local Name:		local_user
+	Local Domain:		HQCORP
+	Logon ID:		0x2F336F
+	Timestamp:		2022-10-17 14:41:25
+	IP Address:		192.168.202.100
+
+Additional Information:
+	Caller Workstation:	2016DC
+	Status Code:	0x0
+
+An attempt was made to set the access the lab server password.
+
+Subject:
+	Security ID:		S-2-6-22-1913345275-1711810662-261465553-400
+	Local Name:		alice
+	Local Domain:		HQCORP
+	Logon ID:		0x3F336F
+	Timestamp:		2022-10-15 23:14:46
+	IP Address:		192.168.201.114
+
+Additional Information:
+	Caller Workstation:	2017DC
+	Status Code:	0x0
+
+An attempt was made to set the access the lab server password.
+
+Subject:
+	Security ID:		S-3-7-23-1913345275-1711810662-261465553-300
+	Local Name:		bob
+	Local Domain:		HQCORP
+	Logon ID:		0x4F336F
+	Timestamp:		2022-10-11 10:32:15
+	IP Address:		192.168.200.125
+
+Additional Information:
+	Caller Workstation:	2018DC
+	Status Code:	0x0
