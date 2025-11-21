@@ -8,7 +8,7 @@ string=""
 
 # -z checks if string null
 if [ -z "$empty_string" ]
-    then
+then
     echo "The string is empty"
 else
     echo "The string is: $string"

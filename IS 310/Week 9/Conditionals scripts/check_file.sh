@@ -4,9 +4,9 @@
 FILE="./test_file.sh"
 
 if [ -e "$FILE" ]
-    then
+then
     if [ -x "$FILE" ]
-        then
+    then
         $FILE
     else
         echo "This script is not executeable"

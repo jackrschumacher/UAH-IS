@@ -8,7 +8,7 @@ read entered_password
 printf "\n"
 
 if [ "$entered_password" = "$predifined_password" ]
-    then
+then
     echo "Acess has been granted"
 else
     echo "The password that you have entered: $entered_password has been found in the predifined passwords list"

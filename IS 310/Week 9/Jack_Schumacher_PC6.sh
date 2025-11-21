@@ -38,7 +38,7 @@ for ((i=0; i < 3; i++)); do
         echo "You did not enter a value"
         i=$((i-1))
     fi
-    
+
 done
 tech_array_count=${#techArray[@]}
 echo "You like the following tech companies"
@@ -48,7 +48,7 @@ done
 echo "Type 5 exam scores, seperated by spaces"
 for ((i=0; i < 5; i++)); do
     read -r -p "Enter value: " grade
-    
+
     if [[ -n "$grade" ]]; then
         gradeArray+=("$grade")
     else
@@ -61,7 +61,7 @@ for i in "${gradeArray[@]}"; do
 done
 count=${#gradeArray[@]}
 # Use the basic calculator utility to get a more accurate value
-average=$(echo "scale=2; $sum / $count" | bc) 
+average=$(echo "scale=2; $sum / $count" | bc)
 echo "Average grade: $average"
 printf "Please enter a sentance to describe your major: "
 read major_description

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Calculate the sum of 2 numbers 
+# Calculate the sum of 2 numbers
 
 echo "Sum Number program"
 read -p "Please enter the first number that you would like to sum: " number1

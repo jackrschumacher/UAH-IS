@@ -11,7 +11,7 @@ if [[ -n "$username" ]]; then
     # "who" displays what user is currently logged into the system
     if who | grep -q "^$username";then
         echo "$username is currently logged in"
-    else 
+    else
         echo "$username is not currently logged in"
     fi
 else

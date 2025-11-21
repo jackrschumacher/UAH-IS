@@ -7,7 +7,7 @@ read entered_number
 
 # Mod entered number to determine if even and odd
 if ((entered_number % 2 == 0))
-    then
+then
     echo "The number $entered_number is even."
 else
     echo "The number $entered_number is odd."

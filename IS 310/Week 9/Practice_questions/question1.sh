@@ -5,7 +5,7 @@
 FILE="test.txt"
 # Check if a file exists using -e. Print the corresponding message to the shell
 if [ -e "$FILE" ]
-    then
+then
     echo "The file $FILE exists"
 else
     echo "The file $FILE does not exist"

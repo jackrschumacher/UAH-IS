@@ -7,7 +7,7 @@ read age
 adult_age=18
 
 if [ "$age" -gt "$adult_age" ]
-    then 
+then
     echo "You are an adult"
 else
     echo "You are not an adult"
