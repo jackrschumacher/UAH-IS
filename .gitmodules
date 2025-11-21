@@ -4,3 +4,4 @@
 [submodule "IS 310/Bash-Final"]
 	path = IS 310/Bash-Final
 	url = git@github.com:jackrschumacher/UAH-IS-310-Bash-Final.git
+	branch = main
