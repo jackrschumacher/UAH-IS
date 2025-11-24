@@ -1,0 +1,4 @@
+Security report 
+ File Length: 56643 
+ Error message count: 813 
+ Warning message count: 392
