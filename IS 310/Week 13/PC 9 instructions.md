@@ -2,12 +2,12 @@
 
 **Tasks**
 
-1.  **Disable Unnecessary Services**
+**Disable Unnecessary Services**
 
 1.  *   Write command(s) to disable `telnet`, `ftp`, and `rsh` services.
         
     *   Ensure it checks if the service exists before disabling it.
-        
+    
 2.  **Configure Firewall Rules**
     
     *   Write command(s) that:
@@ -19,7 +19,7 @@
         *   _Allows `HTTP` (port 80)._
             
         *   _Enables the `firewall`._
-            
+    
 3.  **Secure User Accounts** 
     *   Write command(s) to:
         *   Expire the `root` password.
@@ -27,7 +27,7 @@
         *   Lock the `guest` account (if it exists).
             
         *   Ensure all users have a password (no empty entries in `/etc/shadow`).
-            
+    
 4.  **Automate Updates**
     *   Write command(s) to:
         *   update the linux distribution
@@ -49,7 +49,7 @@
         *   Identify accounts with superuser access (besides root).
             
         *   Save results to `user_audit.txt`.
-            
+    
 2.  **Check File Permissions**
     *   Write command(s) to:
         
@@ -58,7 +58,7 @@
         *   List files with SUID/SGID permissions.
             
         *   Save results to `file_audit.txt`.
-            
+    
 3.  **Network Configuration Audit**
     *   Write command(s) to:
         
@@ -67,7 +67,7 @@
         *   Check if IP forwarding is enabled.
             
         *   Save results to `network_audit.txt`.
-            
+    
 4.  **Log Analysis**
 
 1.  *   Write command(s) that:
