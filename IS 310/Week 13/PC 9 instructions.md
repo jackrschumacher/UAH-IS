@@ -5,13 +5,11 @@
 **Disable Unnecessary Services**
 
 1.  *   Write command(s) to disable `telnet`, `ftp`, and `rsh` services.
-        
-    *   Ensure it checks if the service exists before disabling it.
+        *   Ensure it checks if the service exists before disabling it.
     
-2.  **Configure Firewall Rules**
-    
+    *   **Configure Firewall Rules**
     *   Write command(s) that:
-        
+    
         *   _Blocks all incoming traffic by default._
             
         *   _Allows `SSH` (port 22)._
@@ -20,15 +18,15 @@
             
         *   _Enables the `firewall`._
     
-3.  **Secure User Accounts** 
+2.  **Secure User Accounts** 
     *   Write command(s) to:
         *   Expire the `root` password.
             
         *   Lock the `guest` account (if it exists).
             
         *   Ensure all users have a password (no empty entries in `/etc/shadow`).
-    
-4.  **Automate Updates**
+
+3.  **Automate Updates**
     *   Write command(s) to:
         *   update the linux distribution
             
