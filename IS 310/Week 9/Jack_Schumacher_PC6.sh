@@ -63,6 +63,9 @@ count=${#gradeArray[@]}
 # Use the basic calculator utility to get a more accurate value
 average=$(echo "scale=2; $sum / $count" | bc)
 echo "Average grade: $average"
+# Use the sort function to sort the array of grades in order to find the lowest value
+min_grade=$(printf "%s\n" "${gradeArray[@]}" | sort -n | head -1)
+echo "Minimum grade: $min_grade"
 printf "Please enter a sentance to describe your major: "
-read major_description
+read -r major_description
 echo "$major_description" > major_description.txt
