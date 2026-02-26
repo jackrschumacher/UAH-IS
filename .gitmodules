@@ -5,3 +5,6 @@
 	path = IS 310/Bash-Final
 	url = git@github.com:jackrschumacher/UAH-IS-310-Bash-Final.git
 	branch = main
+[submodule "IS 340/Project-1"]
+	path = IS 340/Project-1
+	url = https://github.com/jackrschumacher/UAH-IS-340-Project-1.git
