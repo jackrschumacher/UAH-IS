@@ -57,3 +57,6 @@ MIN(productprice) AS "MINproductprice",
 MAX(productprice) AS "MAXproductprice"
 FROM product
 WHERE categoryid = 'CP';
+
+
+
