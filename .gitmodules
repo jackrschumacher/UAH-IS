@@ -11,3 +11,6 @@
 [submodule "IS 340/Assignment-7"]
 	path = IS 340/Assignment-7
 	url = git@github.com:jackrschumacher/UAH-IS-340-Assignment-7.git
+[submodule "IS 340/Project-2"]
+	path = IS 340/Project-2
+	url = git@github.com:jackrschumacher/UAH-IS-340-Project-2.git
